@@ -1,5 +1,7 @@
 # IFTTT Webhook
 
+[![crate.io](https://img.shields.io/crates/v/ifttt-webhook)](https://crates.io/crates/ifttt-webhook)
+
 A simple Rust async library for triggering IFTTT events using webhooks.
 
 ## Installation
