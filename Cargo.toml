@@ -1,0 +1,22 @@
+[package]
+name = "ifttt-webhook"
+version = "0.1.0"
+authors = ["Leo Dutra <leodutra.br@gmail.com>"]
+edition = "2018"
+
+description = "Simple async library for triggering IFTTT events using webhooks."
+readme = "README.md"
+keywords = ["ifttt", "webhook", "event", "trigger", "zapier"]
+categories = ["api-bindings"]
+repository = "https://github.com/leodutra/ifttt-webhook"
+license = "MIT"
+license-file = "LICENSE"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+reqwest = { version = "0.10.8", features = ["json"] }
+lazy_static = "1.4.0"
+
+[dev-dependencies]
+tokio = { version = "0.2", features = ["full"] }
