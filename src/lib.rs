@@ -12,8 +12,8 @@ use std::error::Error;
 
 #[derive(Debug, Clone)]
 pub struct IftttWebhook {
-    pub event: &'static str,
-    pub key: &'static str,
+    pub event: String,
+    pub key: String,
 }
 
 impl IftttWebhook {
@@ -63,8 +63,8 @@ mod tests {
         values.insert("value2", "value_2_test_value");
         values.insert("value3", "value_3_test_value");
         let webhook = IftttWebhook {
-            key: &KEY,
-            event: "test",
+            key: KEY.clone(),
+            event: "test".into(),
         };
         let result = webhook.trigger(Some(&values)).await;
         assert_eq!(result.is_ok(), true);
@@ -74,8 +74,8 @@ mod tests {
     async fn test_get() {
         // webhook https://maker.ifttt.com/trigger/test/with/key/{key}
         let webhook = IftttWebhook {
-            key: &KEY,
-            event: "test",
+            key: KEY.clone(),
+            event: "test".into(),
         };
         let result = webhook.trigger(None).await;
         assert_eq!(result.is_ok(), true);
@@ -89,8 +89,8 @@ mod tests {
         values.insert("value2", "value_2_test_value");
         values.insert("value3", "value_3_test_value");
         let webhook = IftttWebhook {
-            key: "wrong_key",
-            event: "test",
+            key: "wrong_key".into(),
+            event: "test".into(),
         };
         let result = webhook.trigger(Some(&values)).await;
         assert_eq!(result.is_err(), true);
@@ -100,8 +100,8 @@ mod tests {
     async fn test_get_error_unauthorized() {
         // webhook https://maker.ifttt.com/trigger/test/with/key/{key}
         let webhook = IftttWebhook {
-            key: "wrong_key",
-            event: "test",
+            key: "wrong_key".into(),
+            event: "test".into(),
         };
         let result = webhook.trigger(None).await;
         assert_eq!(result.is_err(), true);
