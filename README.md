@@ -6,7 +6,7 @@ A simple Rust async library for triggering IFTTT events using webhooks.
 
 ## Installation
 
-Installation can be made using [`cargo add`](https://github.com/killercup/cargo-edit):
+Installation can be performed using [`cargo add`](https://github.com/killercup/cargo-edit):
 
 ```sh
 cargo add ifttt-webhook
