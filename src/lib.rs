@@ -16,31 +16,39 @@ pub struct IftttWebhook {
     pub key: String,
 }
 
+pub fn build_hook_url(key: &str, event: &str) -> String {
+    format!(
+        "https://maker.ifttt.com/trigger/{event}/with/key/{key}",
+        event = event,
+        key = key,
+    )
+}
+
+pub async fn trigger_webhook(key: &str, event: &str, body: Option<&HashMap<&str, &str>>) -> Result<(), impl Error> {
+    let req = if let Some(body) = body {
+        HTTP_CLIENT.post(&build_hook_url(key, event)).json(body)
+    } else {
+        HTTP_CLIENT.get(&build_hook_url(key, event))
+    };
+    let res = req.send().await?;
+    if res.status() != 200 {
+        Err(IftttWebhookError::new(format!(
+            "Invalid status {}.\n{:?}",
+            res.status(),
+            res
+        )))
+    } else {
+        Ok(())
+    }
+}
+
 impl IftttWebhook {
     pub fn url(&self) -> String {
-        format!(
-            "https://maker.ifttt.com/trigger/{event}/with/key/{key}",
-            event = self.event,
-            key = self.key,
-        )
+        build_hook_url(&self.event,&self.key)
     }
 
     pub async fn trigger(&self, body: Option<&HashMap<&str, &str>>) -> Result<(), impl Error> {
-        let req = if let Some(body) = body {
-            HTTP_CLIENT.post(&self.url()).json(body)
-        } else {
-            HTTP_CLIENT.get(&self.url())
-        };
-        let res = req.send().await?;
-        if res.status() != 200 {
-            Err(IftttWebhookError::new(format!(
-                "Invalid status {}.\n{:?}",
-                res.status(),
-                res
-            )))
-        } else {
-            Ok(())
-        }
+        trigger_webhook(&self.key, &self.event, body).await
     }
 }
 
